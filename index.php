@@ -240,7 +240,7 @@ $(document).ready(function(){
 });
 </script>
 <script>
-    function sortTable(columnIndex) {
+    function sortTableup(columnIndex) {
         var orderBy = '';
         switch (columnIndex) {
             case 0:
@@ -261,14 +261,9 @@ $(document).ready(function(){
             default:
                 orderBy = 'id';
         }
-
-        if ($('#order').val() == 'ASC') {
-            order = 'DESC'; 
-        }
-        else{
-            order = 'ASC';
-        }
-
+   
+        var currentOrder = $('#order').val();
+        var newOrder = (currentOrder === 'ASC') ? 'DESC' : 'ASC';
 
         $.ajax({
             url: "backend.php",
@@ -276,16 +271,63 @@ $(document).ready(function(){
             data: {
                 recordrecord: true,
                 orderBy: orderBy,
-                order: order,
+                order: newOrder,
             },
             success: function(data, status) {
                 $("#record_content").html(data);
-                $('#order').val(order); // Update the current order value
+                $('#order').val(newOrder); // Update the current order value
             }
         });
     }
+ 
+     function sortTabledown(columnIndex){
+        var orderBy = '';
+        switch (columnIndex) {
+            case 0:
+                orderBy = 'id';
+                break;
+            case 1:
+                orderBy = 'firstname';
+                break;
+            case 2:
+                orderBy = 'lastname';
+                break;
+            case 3:
+                orderBy = 'email';
+                break;
+            case 4:
+                orderBy = 'phone';
+                break;
+            default:
+                orderBy = 'id';
+        }
+        var currentOrderdown = $('#order').val();
+        var newOrderdown = (currentOrderdown === 'DESC') ? 'ASC' : 'DESC';
+        $.ajax({
+            url: "backend.php",
+            type: "POST",
+            data: {
+                recordrecord: true,
+                orderBy: orderBy,
+                order: newOrderdown,
+            },
+            success: function(data, status) {
+                $("#record_content").html(data);
+                $('#order').val(newOrderdown); // Update the current order value
+            }
+        });
+
+     }
+
+
+
+
+
+
 
 </script>
+
+
 
 
 </body>

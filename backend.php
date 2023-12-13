@@ -5,11 +5,11 @@ extract($_POST);
 if (isset($_POST['recordrecord'])) {
     $data = '<table class="table table-bordered table-striped">
     <tr>
-                            <th onclick="sortTable(0)">Id</th>
-                            <th onclick="sortTable(1)">FirstName</th>
-                            <th onclick="sortTable(2)">LastName</th>
-                            <th onclick="sortTable(3)">Email</th>
-                            <th onclick="sortTable(4)">Phone Number</th>
+                            <th >Id <img src="up.png.png" onclick="sortTableup(0)" alt=""><img src="down.png.png" onclick="sortTabledown(0)" alt=""></th>
+                            <th >FirstName <img src="up.png.png" onclick="sortTableup(1)" alt=""><img src="down.png.png" onclick="sortTabledown(1)" alt=""></th>
+                            <th >LastName <img src="up.png.png" onclick="sortTableup(2)" alt=""><img src="down.png.png" onclick="sortTabledown(2)" alt=""></th>
+                            <th >Email <img onclick="sortTableup(3)" src="up.png.png" alt=""><img src="down.png.png" onclick="sortTabledown(3)" alt=""></th>
+                            <th >Phone Number <img onclick="sortTableup(4)" src="up.png.png" alt=""><img src="down.png.png" onclick="sortTabledown(4)" alt=""></th>
                             <th>Edit Action</th>
                             <th>Delete Action</th>
                             </tr>
@@ -18,13 +18,11 @@ if (isset($_POST['recordrecord'])) {
     $orderBy = isset($_POST['orderBy']) ? $_POST['orderBy'] : 'id';
     $order = isset($_POST['order']) ? $_POST['order'] : 'ASC';
     $displaydata = "SELECT * FROM `students` ORDER BY $orderBy $order";
-    echo"<pre>";
-    print_r($order);
-    echo"</pre>";
+
     $result = mysqli_query($conn, $displaydata);
     if (mysqli_num_rows($result) > 0) {
         $number = 1;
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {    
             $data .= '<tbody id="myTable">
             <tr>
             <td>' . $number . '</td>
@@ -104,3 +102,5 @@ if (isset($_POST['hiddenid'])) {
 
 
 ?>
+
+

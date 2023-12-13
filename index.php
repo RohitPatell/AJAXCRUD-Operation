@@ -226,8 +226,68 @@
                     });
                   });
                 });
+
+
+
+
                 
     </script>
+                    <script>
+$(document).ready(function(){
+    $('columnIndex').on('click',function(){
+        console.log(columnIndex);
+    });
+});
+</script>
+<script>
+    function sortTable(columnIndex) {
+        var orderBy = '';
+        switch (columnIndex) {
+            case 0:
+                orderBy = 'id';
+                break;
+            case 1:
+                orderBy = 'firstname';
+                break;
+            case 2:
+                orderBy = 'lastname';
+                break;
+            case 3:
+                orderBy = 'email';
+                break;
+            case 4:
+                orderBy = 'phone';
+                break;
+            default:
+                orderBy = 'id';
+        }
+
+        if ($('#order').val() == 'ASC') {
+            order = 'DESC'; 
+        }
+        else{
+            order = 'ASC';
+        }
+
+
+        $.ajax({
+            url: "backend.php",
+            type: "POST",
+            data: {
+                recordrecord: true,
+                orderBy: orderBy,
+                order: order,
+            },
+            success: function(data, status) {
+                $("#record_content").html(data);
+                $('#order').val(order); // Update the current order value
+            }
+        });
+    }
+
+</script>
+
+
 </body>
 
 </html>

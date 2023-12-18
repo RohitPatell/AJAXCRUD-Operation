@@ -99,10 +99,17 @@
                 </div>
             </div>
         </div>
-
-
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <div class="container">
+    <h2>CSV File Upload</h2>
+    <form method="post" enctype="multipart/form-data">
+        <label for="csvfile">Select CSV File:</label>
+        <input type="file" name="csvfile" id="csvfile" accept=".csv" required>
+        <button type="submit">Upload</button>
+    </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -318,18 +325,53 @@ $(document).ready(function(){
         });
 
      }
-
-
-
-
-
-
-
 </script>
-
-
-
-
-</body>
-
 </html>
+
+
+<?php
+
+$conn = new mysqli("localhost", "root", "", "test");
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["csvfile"])) {
+    $csvFile = $_FILES["csvfile"]["tmp_name"];
+    
+    $file = fopen($csvFile, 'r');
+
+    if ($file) {
+        $headers = fgetcsv($file);
+        while (($data = fgetcsv($file)) !== false) {
+            $row = array_combine($headers, $data);
+
+            // Use mysqli_real_escape_string to prevent SQL injection
+            $id = mysqli_real_escape_string($conn, $row['id']);
+            $firstname = mysqli_real_escape_string($conn, $row['firstname']);
+            $lastname = mysqli_real_escape_string($conn, $row['lastname']);
+            $email = mysqli_real_escape_string($conn, $row['email']);
+            $phone = mysqli_real_escape_string($conn, $row['phone']);
+
+            // Use the INSERT ... ON DUPLICATE KEY UPDATE syntax
+            $sql = "INSERT INTO students (id, firstname,lastname, email, phone) VALUES ('$id', '$firstname', '$lastname', '$email', '$phone') 
+                    ON DUPLICATE KEY UPDATE firstname='$firstname',lastname='$lastname',email='$email',phone='$phone'";
+
+            if ($conn->query($sql) === TRUE) {
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            echo "Record inserted or updated successfully<br>";
+
+        }
+
+        fclose($file);
+    } else {
+        echo "Error opening the file";
+    }
+}
+
+$conn->close(); 
+
+?>

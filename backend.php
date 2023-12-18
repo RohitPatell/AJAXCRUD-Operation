@@ -1,9 +1,6 @@
-
-
 <?php
 $conn = mysqli_connect("localhost", "root", "", "test");
 extract($_POST);
-
 if (isset($_POST['recordrecord'])) {
     $data = '<table class="table table-bordered table-striped">
     <tr>
@@ -101,6 +98,8 @@ if (isset($_POST['hiddenid'])) {
     $uquery = "UPDATE `students` SET `firstname`='$firstname',`lastname`='$lastname',`email`='$emails',`phone`='$phone' WHERE id = $hidddnid";
     mysqli_query($conn, $uquery);
 }
+
+// code for insert data from CSV file To MYSQL Database.
 
 
 

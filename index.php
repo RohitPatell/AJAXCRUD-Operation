@@ -107,6 +107,15 @@
         <input type="file" name="csvfile" id="csvfile" accept=".csv" required>
         <button type="submit">Upload</button>
     </form>
+    <br>
+
+    <!-- //button for download table in excel formate -->
+    
+    <a href="export.php"><button class="btn btn-primary">Export</button></a>
+
+
+   
+
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
@@ -375,3 +384,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["csvfile"])) {
 $conn->close(); 
 
 ?>
+

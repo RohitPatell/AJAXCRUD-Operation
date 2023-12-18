@@ -1,4 +1,3 @@
-<!-- clone -->
 
 <!DOCTYPE html>
 <html lang="en">

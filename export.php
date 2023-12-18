@@ -15,7 +15,7 @@ header('Content-Type:application/xls');
 header('Content-Disposition: attachment; filename=SqltoCSV.xls');
 echo $html;
 
-// hello my name is rohitt
+// hello my name is rohit
 
 ?>
 

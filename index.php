@@ -338,9 +338,9 @@ $(document).ready(function(){
 </script>
 </html>
 
+<!-- code for fetchdata and convert into xml file -->
 
 <?php
-
 $conn = new mysqli("localhost", "root", "", "test");
 
 if ($conn->connect_error) {
@@ -357,14 +357,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["csvfile"])) {
         while (($data = fgetcsv($file)) !== false) {
             $row = array_combine($headers, $data);
 
-            // Use mysqli_real_escape_string to prevent SQL injection
             $id = mysqli_real_escape_string($conn, $row['id']);
             $firstname = mysqli_real_escape_string($conn, $row['firstname']);
             $lastname = mysqli_real_escape_string($conn, $row['lastname']);
             $email = mysqli_real_escape_string($conn, $row['email']);
             $phone = mysqli_real_escape_string($conn, $row['phone']);
 
-            // Use the INSERT ... ON DUPLICATE KEY UPDATE syntax
             $sql = "INSERT INTO students (id, firstname,lastname, email, phone) VALUES ('$id', '$firstname', '$lastname', '$email', '$phone') 
                     ON DUPLICATE KEY UPDATE firstname='$firstname',lastname='$lastname',email='$email',phone='$phone'";
 

@@ -6,6 +6,7 @@ if (isset($_POST['recordrecord'])) {
     <tr>
 
 <th >Id <a href="#"><img src="up.png.png" onclick="sortTableup(0)" alt=""><img src="down.png.png" onclick="sortTabledown(0)" alt=""></a> </th>
+<th >Profile Image  </th>
                             <th >FirstName <a href="#"><img src="up.png.png" onclick="sortTableup(1)" alt=""><img src="down.png.png" onclick="sortTabledown(1)" alt=""></a></th>
                             <th >LastName<a href="#"><img src="up.png.png" onclick="sortTableup(2)" alt=""><img src="down.png.png" onclick="sortTabledown(2)" alt=""></a> </th>
                             <th >Email <a href="#"><img onclick="sortTableup(3)" src="up.png.png" alt=""><img src="down.png.png" onclick="sortTabledown(3)" alt=""></a></th>
@@ -26,6 +27,7 @@ if (isset($_POST['recordrecord'])) {
             $data .= '<tbody id="myTable">
             <tr>
             <td>' . $row['id'] . '</td>
+            <td><img style="height:90px; widht: 110px;" src="uploads/' .$row['imagesource']. '" alt=""></td>
             <td>' . $row['firstname'] . '</td>
             <td>' . $row['lastname'] . '</td>
             <td>' . $row['email'] . '</td>
@@ -48,16 +50,52 @@ if (isset($_POST['recordrecord'])) {
     echo $data;
 }
 
-if (isset($_POST['fname']) && isset($_POST['lname']) && isset($_POST['emails']) && isset($_POST['mobiles'])) {
-    $query = "insert into `students`( `firstname`, `lastname`, `email`, `phone`) values ('$fname','$lname','$emails','$mobiles')";
-    $run = mysqli_query($conn, $query);
+ if (isset($_POST['image']) && isset($_POST['fname']) && isset($_POST['lname']) && isset($_POST['emails']) && isset($_POST['mobiles']) && isset($_POST['image'])) {
+    $imageData = $_POST['image'];
+    $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+    $imageData = str_replace(' ', '+', $imageData);
+    $imageBinary = base64_decode($imageData);
+    $filename = uniqid() . '.jpg';
+    $uploadPath = 'uploads/' . $filename;
+    file_put_contents($uploadPath, $imageBinary);
 
-    if ($run) {
-        echo "Data Inserted SuccessFully.";
-    } else {
-        echo "Error.";
-    }
-}
+   // $query = "insert into `students`( `imagesource`, `firstname`, `lastname`, `email`, `phone`) values (''$filename','$fname','$lname','$emails','$mobiles')";
+   $query = "INSERT INTO `students` (`imagesource`, `firstname`, `lastname`, `email`, `phone`) VALUES ('$filename', '$fname', '$lname', '$emails', '$mobiles')";
+    $run = mysqli_query($conn, $query);
+     if ($run) {
+         echo "Data Inserted SuccessFully.";    
+     } else {
+         echo "Error.";
+     }
+ }
+
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     $imageData = $_POST["image"];
+//     $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+//     $imageData = str_replace(' ', '+', $imageData);
+//     $imageBinary = base64_decode($imageData);
+//     $filename = uniqid() . '.jpg';
+//     $uploadPath = 'uploads/' . $filename;
+//     file_put_contents($uploadPath, $imageBinary);
+//     $firstname = $_POST['fname'];   
+//     $lastname = $_POST['lname'];
+//     $email = $_POST['emails'];
+//     $email = $_POST['mobiles'];
+    
+//     $query = "INSERT INTO  students (imagesource, firstname, lastname, email, imgsource) VALUES ('$filename', '$firstname', '$lastname', '$email', '$filename')";
+//     $run = mysqli_query($conn, $query);
+//     if ($run) {
+//                 echo "Data Inserted SuccessFully.";
+//             } else {
+//                 echo "Error.";
+//             }
+// }
+
+
+
+
+
+
 
 if (isset($_POST['deleteid'])) {
 
